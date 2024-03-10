@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class firstTrap : MonoBehaviour
 {
-    public float zakresPoruszania = 5f; // Zakres poruszania obiektu
-    public float predkoscPoruszania = 2f; // Prędkość poruszania obiektu
+    private Animator animator; // Animator do obsługi animacji
+    private BoxCollider2D boxCollider; // Box Collider 2D do obsługi collidera
 
-    private bool idzieWGore = true; // Flaga określająca kierunek ruchu obiektu
-
-    void Update()
+    private void Start()
     {
-        // Sprawdzamy kierunek ruchu i aktualizujemy pozycję obiektu
-        if (idzieWGore)
-            transform.Translate(Vector3.up * predkoscPoruszania * Time.deltaTime);
-        else
-            transform.Translate(Vector3.down * predkoscPoruszania * Time.deltaTime);
+        // Pobierz komponenty Animator i BoxCollider2D
+        animator = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
 
-        // Jeżeli obiekt przekroczy górny zakres, zmieniamy kierunek na dół
-        if (transform.position.y > zakresPoruszania / 2)
-            idzieWGore = false;
+        // Sprawdź, czy oba komponenty są dostępne
+        if (animator == null || boxCollider == null)
+        {
+            Debug.LogError("Animator lub BoxCollider2D nie zostały znalezione na tym obiekcie.");
+        }
+    }
 
-        // Jeżeli obiekt przekroczy dolny zakres, zmieniamy kierunek na górę
-        if (transform.position.y < -zakresPoruszania / 2)
-            idzieWGore = true;
+    private void Update()
+    {
+        // Pobierz aktualny rozmiar obiektu z animacji
+        Vector3 currentSize = transform.localScale;
+
+        // Aktualizuj rozmiar box collidera na podstawie aktualnego rozmiaru obiektu
+        boxCollider.size = new Vector2(currentSize.x, currentSize.y);
+
+        // Tutaj dodaj kod do obsługi innych rzeczy związanych z animacją lub innymi akcjami
+        // ...
+
+        // Jeśli animacja jest ukończona, możesz wykonać dodatkowe czynności
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("NazwaAnimacji")) // Zastąp "NazwaAnimacji" nazwą twojej animacji
+        {
+            // Dodatkowe czynności po zakończeniu animacji
+            // ...
+        }
     }
 }
