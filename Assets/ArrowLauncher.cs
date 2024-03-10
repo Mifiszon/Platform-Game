@@ -8,7 +8,7 @@ public class ArrowLauncher : MonoBehaviour
     public GameObject arrow;
     //false = right true = left
     public bool site=false;
-    // Start is called before the first frame update
+   
     
     
     void Start()
@@ -29,9 +29,9 @@ public class ArrowLauncher : MonoBehaviour
             GameObject newObject = Instantiate(arrow, this.transform.position,Quaternion.identity);
             if (site)
             {
-                newObject.transform.Rotate(Vector3.forward, 180f); // 180 stopni obrót w lewo
+                newObject.transform.Rotate(Vector3.forward, 180f);
             }
-            // Oczekaj 1 sekundę przed kolejnym utworzeniem obiektu
+
             yield return new WaitForSeconds(1f);
         }
     }
