@@ -2,35 +2,31 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerBaseState
 {
-    private Animator animator;
-
     public PlayerIdleState(Transform player)
     {
-        animator = player.GetComponent<Animator>();
     }
 
     public override void Start(PlayerStateManager manager)
     {
-        animator.Play("Idle");
+        manager.anim.Play("Idle");
+        manager.rg.velocity = Vector2.zero;
     }
+
+    public override void FixUpdate(PlayerStateManager manager) { }
 
     public override void Update(PlayerStateManager manager)
     {
-        var direction = manager.GetAxis();
-
-        if (direction != Vector2.zero)
+        if (manager.grounded && manager.frameInput.Move != Vector2.zero)
         {
             manager.SwitchState(manager.RunState);
         }
 
-        if (Input.GetAxis("Jump") != 0)
+        if (manager.grounded && manager.frameInput.JumpDown)
         {
             manager.SwitchState(manager.JumpState);
         }
     }
 
-    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other)
-    {
-        return;
-    }
+    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other) { }
+
 }

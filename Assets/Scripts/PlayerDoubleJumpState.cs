@@ -1,19 +1,20 @@
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState
+public class PlayerDoubleJumpState : PlayerBaseState
 {
-    private float _jumpTime = 0.1f;
+    private float _jumpTime = 0.5f;
     private float _timer = 0;
+    private bool _isPlayJumpAnim = false;
 
-    public PlayerJumpState(Transform player)
-    {
-    }
+    public PlayerDoubleJumpState(Transform player) { }
 
     public override void Start(PlayerStateManager manager)
     {
-        manager.anim.Play("Jump");
+        manager.anim.Play("DoubleJump");
+        manager.rg.velocity = Vector2.zero;
         manager.rg.AddForce(Vector2.up * manager.jumpForce, ForceMode2D.Impulse);
         _timer = 0;
+        _isPlayJumpAnim = false;
     }
 
     public override void FixUpdate(PlayerStateManager manager)
@@ -25,13 +26,12 @@ public class PlayerJumpState : PlayerBaseState
     {
         _timer += Time.deltaTime;
 
-        manager.render.flipX = manager.direction.x < 0 || (manager.direction.x <= 0 && manager.render.flipX);
-
         if (_timer < _jumpTime) return;
 
-        if (!manager.grounded && manager.frameInput.JumpDown)
+        if (!_isPlayJumpAnim && _timer > _jumpTime)
         {
-            manager.SwitchState(manager.DoubleJump);
+            manager.anim.Play("Jump");
+            _isPlayJumpAnim = true;
         }
 
         if (manager.grounded && manager.frameInput.Move == Vector2.zero)
@@ -45,5 +45,10 @@ public class PlayerJumpState : PlayerBaseState
         }
     }
 
-    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other) { }
+
+    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other)
+    {
+    }
+
+
 }

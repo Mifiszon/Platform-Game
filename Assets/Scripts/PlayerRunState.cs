@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 public class PlayerRunState : PlayerBaseState
 {
-    Animator animator;
-    Rigidbody2D rig;
-    SpriteRenderer renderer;
+    private Animator animator;
+    private Rigidbody2D rig;
+    private SpriteRenderer renderer;
 
     public PlayerRunState(Transform player)
     {
@@ -19,20 +18,21 @@ public class PlayerRunState : PlayerBaseState
         animator.Play("Run");
     }
 
+    public override void FixUpdate(PlayerStateManager manager)
+    {
+        rig.velocity = new Vector2(manager.direction.x * manager.speed, rig.velocity.y);
+    }
+
     public override void Update(PlayerStateManager manager)
     {
-        var direction = manager.GetAxis();
+        renderer.flipX = manager.direction.x < 0 || (manager.direction.x <= 0 && renderer.flipX);
 
-        renderer.flipX = direction.x < 0 || (direction.x <= 0 && renderer.flipX);
-
-        rig.velocity = new Vector2(direction.x * manager.speed, rig.velocity.y);
-
-        if (direction == Vector2.zero)
+        if (manager.grounded && manager.frameInput.Move == Vector2.zero)
         {
             manager.SwitchState(manager.IdleState);
         }
 
-        if (Input.GetAxis("Jump") != 0)
+        if (manager.grounded && manager.frameInput.JumpDown)
         {
             manager.SwitchState(manager.JumpState);
         }
