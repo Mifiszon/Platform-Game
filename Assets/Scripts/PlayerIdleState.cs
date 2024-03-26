@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerBaseState
 {
-    public PlayerIdleState(Transform player)
-    {
-    }
-
     public override void Start(PlayerStateManager manager)
     {
         manager.anim.Play("Idle");
@@ -16,17 +12,8 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void Update(PlayerStateManager manager)
     {
-        if (manager.grounded && manager.frameInput.Move != Vector2.zero)
-        {
-            manager.SwitchState(manager.RunState);
-        }
+        manager.CheckRunState();
 
-        if (manager.grounded && manager.frameInput.JumpDown)
-        {
-            manager.SwitchState(manager.JumpState);
-        }
+        manager.CheckJumpState();
     }
-
-    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other) { }
-
 }

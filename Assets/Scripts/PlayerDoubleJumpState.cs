@@ -6,8 +6,6 @@ public class PlayerDoubleJumpState : PlayerBaseState
     private float _timer = 0;
     private bool _isPlayJumpAnim = false;
 
-    public PlayerDoubleJumpState(Transform player) { }
-
     public override void Start(PlayerStateManager manager)
     {
         manager.anim.Play("DoubleJump");
@@ -19,12 +17,14 @@ public class PlayerDoubleJumpState : PlayerBaseState
 
     public override void FixUpdate(PlayerStateManager manager)
     {
-        manager.rg.velocity = new Vector2(manager.direction.x * manager.speed, manager.rg.velocity.y);
+        manager.Movement();
     }
 
     public override void Update(PlayerStateManager manager)
     {
         _timer += Time.deltaTime;
+
+        manager.UpdateSpriteFacing();
 
         if (_timer < _jumpTime) return;
 
@@ -34,21 +34,10 @@ public class PlayerDoubleJumpState : PlayerBaseState
             _isPlayJumpAnim = true;
         }
 
-        if (manager.grounded && manager.frameInput.Move == Vector2.zero)
-        {
-            manager.SwitchState(manager.IdleState);
-        }
+        manager.CheckIdleState();
 
-        if (manager.grounded && manager.frameInput.Move != Vector2.zero)
-        {
-            manager.SwitchState(manager.RunState);
-        }
+        manager.CheckRunState();
+
+        manager.CheckHangOffState();
     }
-
-
-    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other)
-    {
-    }
-
-
 }

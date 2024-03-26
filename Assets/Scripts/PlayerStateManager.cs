@@ -7,30 +7,25 @@ public class PlayerStateManager : MonoBehaviour
     public float speed;
     public float jumpForce;
 
-    public Vector2 frameVelocity;
-
-    public Transform groundCheck;
-    public LayerMask groundLayer;
-
-    public Rigidbody2D rg;
-    public CapsuleCollider2D col;
-    public Animator anim;
-    public SpriteRenderer render;
+    [HideInInspector] public Rigidbody2D rg;
+    [HideInInspector] public CapsuleCollider2D col;
+    [HideInInspector] public Animator anim;
+    [HideInInspector] public SpriteRenderer render;
 
     public PlayerBaseState currentState;
-    public PlayerBaseState IdleState, RunState, JumpState, DoubleJump;
+    public PlayerBaseState IdleState, RunState, JumpState, DoubleJump, HangOff;
 
     public FrameInput frameInput;
 
-    public Vector2 direction;
-    public bool grounded;
+    public bool grounded, leftWallCollision, rightWallCollision;
 
     private void Awake()
     {
-        IdleState = new PlayerIdleState(transform);
-        RunState = new PlayerRunState(transform);
-        JumpState = new PlayerJumpState(transform);
-        DoubleJump = new PlayerDoubleJumpState(transform);
+        IdleState = new PlayerIdleState();
+        RunState = new PlayerRunState();
+        JumpState = new PlayerJumpState();
+        DoubleJump = new PlayerDoubleJumpState();
+        HangOff = new PlayerHangOff();
     }
 
     private void Start()
@@ -39,6 +34,7 @@ public class PlayerStateManager : MonoBehaviour
         col = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
         render = GetComponent<SpriteRenderer>();
+
         SwitchState(IdleState);
     }
 
@@ -61,42 +57,29 @@ public class PlayerStateManager : MonoBehaviour
         frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < 0.1f ? 0 : Mathf.Sign(frameInput.Move.x);
         frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < 0.3f ? 0 : Mathf.Sign(frameInput.Move.y);
 
-        direction = GetAxis();
         currentState.Update(this);
-
     }
+
+    public void CheckJumpState() { if (grounded && frameInput.JumpDown) SwitchState(JumpState); }
+    public void CheckDoubleJumpState() { if (!grounded && frameInput.JumpDown) SwitchState(DoubleJump); }
+    public void CheckIdleState() { if (grounded && frameInput.Move == Vector2.zero) SwitchState(IdleState); }
+    public void CheckRunState() { if (grounded && frameInput.Move.x != 0) SwitchState(RunState); }
+    public void CheckHangOffState() { if (!grounded && (leftWallCollision || rightWallCollision)) SwitchState(HangOff); }
+
+    public void Movement() => rg.velocity = new Vector2(frameInput.Move.x * speed, rg.velocity.y);
+
+    public void UpdateSpriteFacing() => render.flipX = frameInput.Move.x < 0 || (frameInput.Move.x <= 0 && render.flipX);
 
     private void CheckCollisions()
     {
         Physics2D.queriesStartInColliders = false;
-
-        bool groundHit = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.down, 0.05f);
-        bool ceilingHit = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.up, 0.05f);
-
-        if (ceilingHit) frameVelocity.y = Mathf.Min(0, frameVelocity.y);
-
-        if (!grounded && groundHit) frameVelocity.y = 0;
-
-        grounded = groundHit;
+        grounded = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.down, 0.05f);
     }
 
     public void SwitchState(PlayerBaseState state)
     {
         currentState = state;
         currentState.Start(this);
-    }
-
-    public Vector2 GetAxis()
-    {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-
-        return new Vector2(x, y);
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        currentState.OnCollisionEnter(this, other);
     }
 
     public struct FrameInput

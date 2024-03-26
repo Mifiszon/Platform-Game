@@ -2,45 +2,22 @@ using UnityEngine;
 
 public class PlayerRunState : PlayerBaseState
 {
-    private Animator animator;
-    private Rigidbody2D rig;
-    private SpriteRenderer renderer;
-
-    public PlayerRunState(Transform player)
-    {
-        animator = player.GetComponent<Animator>();
-        rig = player.GetComponent<Rigidbody2D>();
-        renderer = player.GetComponent<SpriteRenderer>();
-    }
-
     public override void Start(PlayerStateManager manager)
     {
-        animator.Play("Run");
+        manager.anim.Play("Run");
     }
 
     public override void FixUpdate(PlayerStateManager manager)
     {
-        rig.velocity = new Vector2(manager.direction.x * manager.speed, rig.velocity.y);
+        manager.Movement();
     }
 
     public override void Update(PlayerStateManager manager)
     {
-        renderer.flipX = manager.direction.x < 0 || (manager.direction.x <= 0 && renderer.flipX);
+        manager.UpdateSpriteFacing();
 
-        if (manager.grounded && manager.frameInput.Move == Vector2.zero)
-        {
-            manager.SwitchState(manager.IdleState);
-        }
+        manager.CheckJumpState();
 
-        if (manager.grounded && manager.frameInput.JumpDown)
-        {
-            manager.SwitchState(manager.JumpState);
-        }
-    }
-
-
-    public override void OnCollisionEnter(PlayerStateManager manager, Collision2D other)
-    {
-        return;
+        manager.CheckIdleState();
     }
 }
