@@ -7,6 +7,8 @@ TagManager:
   - Arrow
   - Spiked
   - Saw
+  - Card
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -44,6 +46,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: 1
-    uniqueID: 3949140071
+  - name: UI
+    uniqueID: 2676884191
+    locked: 0
+  - name: Obstacles
+    uniqueID: 1746026645
+    locked: 0
+  - name: Player
+    uniqueID: 1772634469
+    locked: 0
+  - name: Walls
+    uniqueID: 4074503015
     locked: 0

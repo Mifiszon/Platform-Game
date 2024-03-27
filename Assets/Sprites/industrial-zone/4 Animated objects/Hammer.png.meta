@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 24
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,11 +101,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
+        y: 0
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: Hammer_1
       rect:
         serializedVersion: 2
-        x: 224
-        y: 30
+        x: 32
+        y: 0
         width: 32
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +142,12 @@ TextureImporter:
       name: Hammer_2
       rect:
         serializedVersion: 2
-        x: 192
-        y: 20
+        x: 64
+        y: 0
         width: 32
-        height: 44
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,12 +163,12 @@ TextureImporter:
       name: Hammer_3
       rect:
         serializedVersion: 2
-        x: 160
-        y: 10
+        x: 96
+        y: 0
         width: 32
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -188,8 +188,8 @@ TextureImporter:
         y: 0
         width: 32
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +205,12 @@ TextureImporter:
       name: Hammer_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 2
+        x: 160
+        y: 0
         width: 32
-        height: 62
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -226,12 +226,12 @@ TextureImporter:
       name: Hammer_6
       rect:
         serializedVersion: 2
-        x: 64
+        x: 192
         y: 0
         width: 32
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,12 +247,12 @@ TextureImporter:
       name: Hammer_7
       rect:
         serializedVersion: 2
-        x: 32
-        y: 10
+        x: 224
+        y: 0
         width: 32
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 64
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -260,27 +260,6 @@ TextureImporter:
       bones: []
       spriteID: 98d0377a2b0a54343a48d6daf4b420e5
       internalID: 1500110999
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hammer_8
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 10
-        width: 32
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 02e19ed9cb224124dbabecdfd62e4943
-      internalID: -412487568
       vertices: []
       indices: 
       edges: []
@@ -304,7 +283,6 @@ TextureImporter:
       Hammer_5: 309510968
       Hammer_6: 276572947
       Hammer_7: 1500110999
-      Hammer_8: -412487568
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
