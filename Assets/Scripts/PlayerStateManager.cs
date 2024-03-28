@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlayerStateManager : MonoBehaviour
 {
+    public static event Action Damage;
+
     public float speed;
     public float jumpForce;
 
@@ -78,6 +81,14 @@ public class PlayerStateManager : MonoBehaviour
     {
         currentState = state;
         currentState.Start(this);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.CompareTag("Trap"))
+        {
+            Damage.Invoke();
+        }
     }
 
     public struct FrameInput

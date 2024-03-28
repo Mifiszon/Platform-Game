@@ -15,4 +15,9 @@ public class CardCounter : MonoBehaviour
     {
         _cardText.SetText((++_cards).ToString());
     }
+
+    private void OnDestroy()
+    {
+        Card.Collected -= OnCardCollected;
+    }
 }
