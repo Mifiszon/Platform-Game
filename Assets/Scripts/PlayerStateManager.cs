@@ -4,9 +4,11 @@ using UnityEngine;
 public class PlayerStateManager : MonoBehaviour
 {
     public static event Action Damage;
+    public static event Action Death;
 
     public float speed;
     public float jumpForce;
+    public float life = 3;
 
     [HideInInspector] public Rigidbody2D rg;
     [HideInInspector] public CapsuleCollider2D col;
@@ -14,7 +16,7 @@ public class PlayerStateManager : MonoBehaviour
     [HideInInspector] public SpriteRenderer render;
 
     public PlayerBaseState currentState;
-    public PlayerBaseState IdleState, RunState, JumpState, DoubleJump, HangOff;
+    public PlayerBaseState IdleState, RunState, JumpState, DoubleJump, DeathState;
 
     public FrameInput frameInput;
 
@@ -26,7 +28,7 @@ public class PlayerStateManager : MonoBehaviour
         RunState = new PlayerRunState();
         JumpState = new PlayerJumpState();
         DoubleJump = new PlayerDoubleJumpState();
-        HangOff = new PlayerHangOff();
+        DeathState = new PlayerDeathState();
     }
 
     private void Start()
@@ -41,6 +43,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.isEndGame) return;
+
         CheckCollisions();
 
         currentState.FixUpdate(this);
@@ -48,6 +52,8 @@ public class PlayerStateManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.isEndGame) return;
+
         frameInput = new FrameInput
         {
             JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
@@ -59,13 +65,14 @@ public class PlayerStateManager : MonoBehaviour
         frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < 0.3f ? 0 : Mathf.Sign(frameInput.Move.y);
 
         currentState.Update(this);
+        CheckDeathState();
     }
 
     public void CheckJumpState() { if (grounded && frameInput.JumpDown) SwitchState(JumpState); }
     public void CheckDoubleJumpState() { if (!grounded && frameInput.JumpDown) SwitchState(DoubleJump); }
     public void CheckIdleState() { if (grounded && frameInput.Move == Vector2.zero) SwitchState(IdleState); }
     public void CheckRunState() { if (grounded && frameInput.Move.x != 0) SwitchState(RunState); }
-    public void CheckHangOffState() { if (!grounded && (leftWallCollision || rightWallCollision)) SwitchState(HangOff); }
+    public void CheckDeathState() { if (life == 0) { SwitchState(DeathState); Death.Invoke(); } }
 
     public void Movement() => rg.velocity = new Vector2(frameInput.Move.x * speed, rg.velocity.y);
 
@@ -88,6 +95,7 @@ public class PlayerStateManager : MonoBehaviour
         if (other.transform.CompareTag("Trap"))
         {
             Damage.Invoke();
+            life -= 1;
         }
     }
 

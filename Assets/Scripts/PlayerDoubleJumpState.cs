@@ -37,7 +37,5 @@ public class PlayerDoubleJumpState : PlayerBaseState
         manager.CheckIdleState();
 
         manager.CheckRunState();
-
-        manager.CheckHangOffState();
     }
 }

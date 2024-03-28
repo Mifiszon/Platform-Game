@@ -18,10 +18,6 @@ public class PlayerJumpState : PlayerBaseState
     public override void FixUpdate(PlayerStateManager manager)
     {
         manager.Movement();
-
-        if (_timer < _timeToHangOff) return;
-
-        manager.CheckHangOffState();
     }
 
     public override void Update(PlayerStateManager manager)
