@@ -2,7 +2,7 @@
 
 Jest to projekt przeznaczony do nauki podstawowych funkcjonalności związanych z projektowaniem własnej gry platformowej. 
 
-# Instrukcja pobrania projektu
+## Instrukcja pobrania projektu
 
 w lokalnym terminalu wprowadź następującą komendę:
 - Dla SSH `git clone git@github.com:AGH-Code-Industry/sfi-warsztaty.git`
